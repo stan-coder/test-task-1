@@ -1,0 +1,15 @@
+{
+  "name": "test_task_1",
+  "version": "1.0.0",
+  "description": "Extraction data (title with URL) from Google",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "google": "^2.0.0"
+  }
+}
