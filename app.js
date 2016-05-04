@@ -1,5 +1,9 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser')
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use(express.static(__dirname + '/public'));
 
@@ -25,5 +29,17 @@ app.get('/', (req, res) => {
 });
 
 app.post('/getData', (req, res) => {
-	res.json({hello: "world"});
+	var postData = req.body;
+	
+	if (!'query' in postData || typeof postData.query !== 'string' || postData.query.toString().length < 1) {
+		res.json({
+			success: false, 
+			error: 'Please, type query string'
+		});
+		return;
+	}
+
+	require(__dirname + '/inc/googleData')((data) => {
+		res.json(data);
+	});
 });

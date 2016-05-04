@@ -4,12 +4,33 @@ app.controller('generalCtrl', ($scope, $http) => {
 
 	$scope.makeSearch = function() {
 
-		$http.post('/getData', {query: $scope.searchQuery})
-	    .success(function(data) {
-	        console.log(data);
-	    })
-	    .error(function(data) {
-	        console.log('Error: ' + data);
-	    });
+		showLoader(true);
+		var prom = $http.post('/getData', {query: $scope.searchQuery});
+
+		var changedThen = new Proxy(prom.then, {
+			apply: (oldFunc, thisScope, argumentsList) => {
+				//showLoader(false);
+				oldFunc.apply(prom, argumentsList);
+			}
+		});
+		prom.changedThen = changedThen;
+		
+		prom.changedThen(
+			(res) => {
+    		console.log(res.data);
+    	}, 
+    	(res) => {
+    		console.log(res);
+    	}
+		);
+
+		
+	};
+
+	function showLoader(status) {
+		$scope.searchButtonHidden = status;
+		$scope.loaderHidden = !status;
 	}
+
+	showLoader(false);
 });

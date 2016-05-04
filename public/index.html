@@ -4,6 +4,7 @@
 	<title>Search within Google</title>
 	<link rel="stylesheet" type="text/css" href="/css/cosmo-theme-of-bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/css/loader.css">
 	<script src="/js/angular.min.js"></script>
 	<script src="/js/application.js"></script>
 </head>
@@ -11,8 +12,19 @@
 
 	<div class="container" id="container" ng-controller="generalCtrl">
 		<input type="text" placeholder="Search query" ng-model="searchQuery" class="form-control"></input>
-		<a class="btn btn-primary btn-lg mt40" ng-click="makeSearch()">Search</a>
-
+		<a ng-hide="searchButtonHidden" class="btn btn-primary btn-lg mt40" ng-click="makeSearch()">Search</a>
+		
+		<div class="loader" ng-hide="loaderHidden">
+			<div class="cssload-container">
+				<div class="cssload-l">L</div>
+				<div class="cssload-circle"></div>
+				<div class="cssload-square"></div>
+				<div class="cssload-triangle"></div>
+				<div class="cssload-i">I</div>
+				<div class="cssload-n">N</div>
+				<div class="cssload-g">G</div>
+			</div>
+		</div>
 
 	</div>
 
