@@ -1,5 +1,5 @@
 #container{
-	margin-top: 200px;
+	margin-top: 250px;
 	text-align: center;
 }
 
@@ -8,6 +8,12 @@
 }
 
 .loader {
-	margin-top: 50px;
-	
+	margin-top: 70px;
+}
+
+.messagePanel {
+	width: 400px;
+	margin-right: auto;
+  margin-left: auto;
+  margin-top: -103px;
 }

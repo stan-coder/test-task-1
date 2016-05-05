@@ -34,7 +34,7 @@ app.post('/getData', (req, res) => {
 	if (!'query' in postData || typeof postData.query !== 'string' || postData.query.toString().length < 1) {
 		res.json({
 			success: false, 
-			error: 'Please, type query string'
+			error: 'Please, type query string!'
 		});
 		return;
 	}
