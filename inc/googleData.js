@@ -1,25 +1,16 @@
-module.exports = (cb) => {
-
-	//var google = require('google');	 
-	//google.resultsPerPage = 1;
+module.exports = (query, cb) => {
 	
-	setTimeout(() => {
-		cb({
-	  	success: true,
-	  	title: 'Title 1', 
-	  	href: 'Link 1'
-	  });
-	}, 700);
+	var google = require('google');	 
+	google.resultsPerPage = 1;	
 
-	/*google('nodejs in action', (err, res) => {
-	  
+	google(query, (err, res) => {
+
 	  if (err) {
-	  	cb({
+	  	return cb({
 	  		success: false, 
 	  		error: err
 	  	});
-	  }
-	  
+	  }	  
 	  var link = res.links[0];
 
 	  cb({
@@ -27,5 +18,5 @@ module.exports = (cb) => {
 	  	title: link.title, 
 	  	href: link.href
 	  });
-	});*/
+	});
 };

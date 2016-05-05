@@ -1,0 +1,1 @@
+This application grab result of search query and gets first of it.

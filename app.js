@@ -13,12 +13,12 @@ app.get('*', (req, res) => {
   	.send('Sorry, page not found!');
 });
 
-/*app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
   res
   	.status(500)
   	.send('Something broken!');
-});*/
+});
 
 app.listen(7000, () => {
   console.log('Server is listening on port 7000');
@@ -39,7 +39,7 @@ app.post('/getData', (req, res) => {
 		return;
 	}
 
-	require(__dirname + '/inc/googleData')((data) => {
+	require(__dirname + '/inc/googleData')(postData.query, (data) => {
 		res.json(data);
 	});
 });

@@ -8,26 +8,36 @@ app.controller('generalCtrl', ($scope, $http, $timeout) => {
 	$scope.makeSearch = () => {
 
 		if (!$scope.searchQuery) {
-			$scope.showWarningPanel(true);
+			$scope.showMessagePanel(true);
 			return;
 		}
 
 		showLoader(true);
+		$scope.resultQueryHidden = true;
 		var prom = $http.post('/getData', {query: $scope.searchQuery});
 
 		var cbs = {
 			fillfilled(res) {
-				console.log('Yes');
-				console.log(res.data);
+
+				if (Object.getPrototypeOf(res) !== Object.prototype || !'data' in res || res.data.success !== true) {
+					$scope.showMessagePanel(true, 'error');
+					return;
+				}
+				$scope.query = res.data;
+				$scope.resultQueryHidden = false;
 			}, 
 			rejected(res) {
-				console.log('No');
-				console.log(res);
+				$scope.showMessagePanel(true, 'error');
 			}
 		};
 
 		var trapCbs = [];
 
+		/**
+		 * This action need to aviod duplication of call "showLoader" function which
+		 * is required to call in order to hide loader in every case: 
+		 * either promise performed successfully or failed
+		 */
 		Object.keys(cbs).forEach((cb) => {
 			var trap = new Proxy(cbs[cb], {
 				apply: function(oldFunc, thisScope, argumentsList) {
@@ -38,8 +48,7 @@ app.controller('generalCtrl', ($scope, $http, $timeout) => {
 			trapCbs.push(trap);
 		});
 
-		prom.then.apply(prom, trapCbs);
-		
+		prom.then.apply(prom, trapCbs);		
 	};
 
 	function showLoader(status) {
@@ -48,17 +57,39 @@ app.controller('generalCtrl', ($scope, $http, $timeout) => {
 	}
 
 	showLoader(false);
-	$scope.warningPanelHidden = true;
+	$scope.messagelPanelHidden = true;
+	$scope.resultQueryHidden = true;
+	$scope.messagePanelComponentsData = {
+		class: '',
+		title: '', 
+		message: ''
+	};
 
 	/**
 	 * Hide warning panel
 	 */
-	$scope.showWarningPanel = (status) => {
-		$scope.warningPanelHidden = !status;
+	$scope.showMessagePanel = (status, typeMessage = 'warning') => {
+		setMessagePanelComponent(typeMessage);
+		$scope.messagelPanelHidden = !status;
 		if (status) {
 			$timeout(function () {
-        $scope.warningPanelHidden = true;
+        $scope.messagelPanelHidden = true;
     	}, 1000);
 		}
+	};
+
+	/**
+	 * Set message-panel attributes before showing
+	 */
+	function setMessagePanelComponent(type) {
+		var types = {
+			warning: ['warning', 'Warning!', 'Please, type query string!'], 
+			error: ['danger', 'Error!', 'Some unexpected error has arised!']
+		};
+		$scope.messagePanelComponentsData = {
+			class: 'alert alert-dismissible messagePanel alert-' + types[type][0],
+			title: types[type][1], 
+			message: types[type][2]
+		};
 	};
 });
