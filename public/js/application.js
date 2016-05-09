@@ -17,7 +17,7 @@ app.controller('generalCtrl', ($scope, $http, $timeout) => {
 		var prom = $http.post('/getData', {query: $scope.searchQuery});
 
 		var cbs = {
-			fillfilled(res) {
+			fulfilled(res) {
 
 				if (Object.getPrototypeOf(res) !== Object.prototype || !'data' in res || res.data.success !== true) {
 					$scope.showMessagePanel(true, 'error');
@@ -34,7 +34,7 @@ app.controller('generalCtrl', ($scope, $http, $timeout) => {
 		var trapCbs = [];
 
 		/**
-		 * This action need to aviod duplication of call "showLoader" function which
+		 * This action need to avoid duplication of call "showLoader" function which
 		 * is required to call in order to hide loader in every case: 
 		 * either promise performed successfully or failed
 		 */
